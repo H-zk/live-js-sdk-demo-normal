@@ -11,6 +11,17 @@ export function getLiveSdkHackHelper(liveSdk) {
     return liveSdk.player.player.livePlayer;
   };
 
+  function setFullScreenBtnStatus(isToFull) {
+    const $el = document.querySelector('.plv-player-skin__fullscreen');
+    if (!$el) return;
+
+    if (isToFull) {
+      $el.classList.add('plv-player-skin__normalscreen');
+    } else {
+      $el.classList.remove('plv-player-skin__normalscreen');
+    }
+  }
+
   const getWebPageFullScreenComponent = () => {
     return liveSdk.player.player.livePlayer.webPageFullScreenComponent;
   };
@@ -41,9 +52,15 @@ export function getLiveSdkHackHelper(liveSdk) {
 
   return {
     /** 设置全屏 */
-    openFullscreen: () => { getLivePlayer().events.emit('FULL_SCREEN_CLICK', true); },
+    openFullscreen: () => {
+      setFullScreenBtnStatus(true);
+      getLivePlayer().events.emit('FULL_SCREEN_CLICK', true);
+    },
     /** 退出全屏 */
-    exitFullscreen: () => { getLivePlayer().events.emit('FULL_SCREEN_CLICK', false); },
+    exitFullscreen: () => {
+      setFullScreenBtnStatus(false);
+      getLivePlayer().events.emit('FULL_SCREEN_CLICK', false);
+    },
     /** 兼容 webview 播放器 */
     polyfillWebviewPlayer
   };
