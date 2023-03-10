@@ -7,6 +7,10 @@
  * @param liveSdk  PolyvLiveSdk 实例
  */
 export function getLiveSdkHackHelper(liveSdk) {
+  const getLivePlayer = () => {
+    return liveSdk.player.player.livePlayer;
+  };
+
   const getWebPageFullScreenComponent = () => {
     return liveSdk.player.player.livePlayer.webPageFullScreenComponent;
   };
@@ -37,9 +41,9 @@ export function getLiveSdkHackHelper(liveSdk) {
 
   return {
     /** 设置全屏 */
-    setFullscreen: () => { getWebPageFullScreenComponent().setFullscreen(); },
+    openFullscreen: () => { getLivePlayer().events.emit('FULL_SCREEN_CLICK', true); },
     /** 退出全屏 */
-    setNormalscreen: () => { getWebPageFullScreenComponent().setNormalscreen(); },
+    exitFullscreen: () => { getLivePlayer().events.emit('FULL_SCREEN_CLICK', false); },
     /** 兼容 webview 播放器 */
     polyfillWebviewPlayer
   };
