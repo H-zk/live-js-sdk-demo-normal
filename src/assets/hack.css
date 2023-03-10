@@ -1,0 +1,7 @@
+div.plv-webview-polyfill.plv-live-fullscreen--landscape {
+  transform: rotate(90deg) translate(var(--plv-fullscreen-webview-polyfill), 0) !important;
+}
+div.plv-webview-polyfill.plv-live-fullscreen--landscape.plv-live-fullscreen--view-landscape {
+  transform: translate(var(--plv-fullscreen-webview-polyfill), 0) !important;
+  width: calc(100vw - var(--plv-fullscreen-webview-polyfill)) !important;
+}

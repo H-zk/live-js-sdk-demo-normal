@@ -195,7 +195,11 @@ export default class PolyvLive {
         */
         drag: true
       },
-      rtc: true // 在非无延迟的频道里面设置后可进行连麦，sdk会加载连麦sdk并返回实例
+      rtc: true, // 在非无延迟的频道里面设置后可进行连麦，sdk会加载连麦sdk并返回实例
+
+      // CDN 直播播放器-页面全屏选项
+      webPageFullScreen: true,
+      fullScreenOrientation: 'landscape'
     });
 
     plvLiveMessageHub.trigger(PlvLiveMessageHubEvents.PLAYER_INIT, { data });

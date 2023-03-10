@@ -79,6 +79,8 @@ import PolyvInteractionsReceive, {
   PlvIRMessageHubEvents,
 } from '@/sdk/interactions-receive';
 
+import { getLiveSdkHackHelper } from '@/assets/hack';
+
 const irEntranceService = new IREntranceService();
 const likeService = new LikeService();
 
@@ -284,6 +286,30 @@ export default {
       plvLiveMessageHub.on(PlvLiveMessageHubEvents.PLAYER_INIT, ({ data }) => {
         this.playerInited = true;
         this.renderLike(data);
+
+        const liveSdk = plvLive.liveSdk;
+        const hackHelper = getLiveSdkHackHelper(liveSdk);
+
+        // CDN 直播播放器 - 页面全屏切换钩子
+        liveSdk.player.on('s2j_onFullScreen', () => {
+          hackHelper.polyfillWebviewPlayer(0);
+        });
+        liveSdk.player.on('s2j_onNormalScreen', () => {
+          console.info('s2j_onNormalScreen isFullScreen');
+        });
+        liveSdk.player.on('controlDisplay', () => {
+          console.info('controlDisplay');
+        });
+
+        // 无延迟的直播播放器 - 全屏切换
+        liveSdk.player.on('rtcInitialized', () => {
+          console.info('rtcInitialized');
+          const player = plvLive.liveSdk.player;
+          const livePlayer = player.player.livePlayer;
+          livePlayer.on('fullscreenchange', () => {
+            console.info('fullscreenchange1');
+          });
+        });
       });
 
       // 点赞互动
@@ -339,6 +365,7 @@ export default {
 };
 </script>
 
+<style src="@/assets/hack.css"></style>
 <style lang="scss">
 .plv-watch-mobile {
   position: absolute;
@@ -488,4 +515,5 @@ export default {
   /* 需要大于播放器控制条的 z-inedx */
   z-index: 2002;
 }
+
 </style>
